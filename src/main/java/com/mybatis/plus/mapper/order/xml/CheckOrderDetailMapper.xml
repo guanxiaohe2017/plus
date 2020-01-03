@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.plus.mapper.order.CheckOrderDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mybatis.plus.entity.order.CheckOrderDetail">
+        <id column="check_order_detail_id" property="checkOrderDetailId" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+        <result column="check_order_id" property="checkOrderId" />
+        <result column="cst_id" property="cstId" />
+        <result column="inventory_id" property="inventoryId" />
+        <result column="bill_num" property="billNum" />
+        <result column="check_num" property="checkNum" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        create_time,
+        update_time,
+        check_order_detail_id, check_order_id, cst_id, inventory_id, bill_num, check_num, status
+    </sql>
+
+</mapper>
