@@ -1,11 +1,16 @@
 # DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://192.168.10.25:3306/rm-ispd-flvcat?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    url: jdbc:mysql://192.168.111.147:3306/rm-ispd-fuwai1108?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
-    username: root
-    password: 123
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://39.99.159.18:1433;DatabaseName=TXJ_Web
+    username: collect
+    password: txjkj@123456
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+##    url: jdbc:mysql://192.168.10.25:3306/rm-ispd-flvcat?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://192.168.111.147:3306/rm-ispd-fuwai1108?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+#    username: root
+#    password: 123
+
   
 # Tomcat datasource specific settings
 # org.apache.tomcat.jdbc.pool.DataSource  org.apache.tomcat.jdbc.pool.PoolProperties

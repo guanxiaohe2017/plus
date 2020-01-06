@@ -77,7 +77,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     jdbc-type-for-null: null
     call-setters-on-nulls: true
-  mapper-locations: classpath*:/com/mybatis/**/*Mapper.xml
+  mapper-locations: classpath*:/mapper/plus/**/*Mapper.xml
 
 
 conf:
