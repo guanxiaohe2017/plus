@@ -85,6 +85,13 @@ conf:
     demo: http://localhost:8091
 
 
+logging:
+  level:
+    root: info
+  config: classpath:logback.xml
+
+
+
 
 
 
