@@ -18,4 +18,6 @@ public interface IFgTestR3Service extends IService<FgTestR3> {
     void formatContentContainsWd();
 
     void moveToWd();
+
+    void fixFg();
 }

@@ -50,5 +50,12 @@ public class FgTestR3Controller {
 
         return "success";
     }
+
+    @RequestMapping("fixFg")
+    public String fixFg(){
+        iFgTestR3Service.fixFg();
+
+        return "success";
+    }
 }
 

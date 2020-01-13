@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,5 +86,59 @@ public class FgTestR3ServiceImpl extends ServiceImpl<FgTestR3Mapper, FgTestR3> i
             wdTestR3Service.save(wdTestR3);
         }
 //        wdTestR3Service.saveBatch(wdTestR3s);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void fixFg() {
+        QueryWrapper<FgTestR3> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("webGuid","103","105","106","107","108");
+        queryWrapper.isNotNull("collectFjName");
+        queryWrapper.ne("collectFjName","");
+        List<FgTestR3> list = iFgTestR3Service.list(queryWrapper);
+
+        for (FgTestR3 fgTestR3 : list) {
+            fgTestR3.setAttachmentesUrl(fgTestR3.getCollectFjName());
+            fgTestR3.setFjCollectionDate(LocalDateTime.now());
+            fgTestR3.setIscollectionFJ("是");
+            String name = fgTestR3.getCollectFjName();
+            StringBuilder regex = new StringBuilder();
+            if (name.contains("103")) {
+                regex.append("\\");
+                regex.append("Files");
+                regex.append("\\");
+                regex.append("103");
+                regex.append("\\");
+            } else if (name.contains("105")) {
+                regex.append("\\");
+                regex.append("Files");
+                regex.append("\\");
+                regex.append("105");
+                regex.append("\\");
+            } else if (name.contains("106")) {
+                regex.append("\\");
+                regex.append("Files");
+                regex.append("\\");
+                regex.append("106");
+                regex.append("\\");
+            } else if (name.contains("107")) {
+                regex.append("\\");
+                regex.append("Files");
+                regex.append("\\");
+                regex.append("107");
+                regex.append("\\");
+            } else if (name.contains("108")) {
+                regex.append("\\");
+                regex.append("F");
+                regex.append("iles");
+                regex.append("\\");
+                regex.append("108");
+                regex.append("\\");
+            }
+
+            fgTestR3.setAttachmentesName(name.replace(regex.toString(),""));
+        }
+
+        iFgTestR3Service.updateBatchById(list);
     }
 }
