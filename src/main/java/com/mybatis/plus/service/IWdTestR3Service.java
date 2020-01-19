@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IWdTestR3Service extends IService<WdTestR3> {
 
+    void formatContent();
 }

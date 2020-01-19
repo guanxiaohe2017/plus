@@ -20,4 +20,12 @@ public interface IFgTestR3Service extends IService<FgTestR3> {
     void moveToWd();
 
     void fixFg();
+
+    void changeTimeliness();
+
+    void addType();
+
+    void deleteSHWD();
+
+    void addDimension(String type, String webGuid);
 }

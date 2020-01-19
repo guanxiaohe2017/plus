@@ -37,10 +37,7 @@ public class FgTestR3Controller {
 
     @RequestMapping("formatContent")
     public String formatContent(){
-//        FgTestR3 byId = iFgTestR3Service.getById(63L);
-//        String content = byId.getContents();
-//        String replace = content.replace("　　", "\n\n");
-//        iFgTestR3Service.formatContentContainsWd();
+
         return "success";
     }
 
@@ -57,5 +54,43 @@ public class FgTestR3Controller {
 
         return "success";
     }
+
+    @RequestMapping("changeTimeliness")
+    public String changeTimeliness(){
+        iFgTestR3Service.changeTimeliness();
+        return "success";
+    }
+
+    @RequestMapping("test")
+    public String test(){
+//        iFgTestR3Service.changeTimeliness();
+        return "success";
+    }
+
+    @RequestMapping("addType")
+    public String addType(){
+        iFgTestR3Service.addType();
+        return "success";
+    }
+
+    @RequestMapping("deleteSHWD")
+    public String deleteSHWD(){
+        iFgTestR3Service.deleteSHWD();
+        return "success";
+    }
+
+    /**
+     * @author: 官昌洪
+     * @Description: 批量设置文章时效性、行业、税种
+     * @Date: 2020/1/16 10:07
+     * @Param: type-设置种类（timeliness-时效性；industry-行业；taxType-税种），webGuid-网站编号
+     * @return:
+     */
+    @RequestMapping("addDimension")
+    public String addDimension(String type, String webGuid) {
+        iFgTestR3Service.addDimension(type, webGuid);
+        return "success";
+    }
+
 }
 

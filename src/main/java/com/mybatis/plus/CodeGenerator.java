@@ -56,8 +56,8 @@ public class CodeGenerator {
         dsc.setUrl("jdbc:sqlserver://39.99.159.18:1433;DatabaseName=TXJ_Web");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        dsc.setUsername("collect");
-        dsc.setPassword("txjkj@123456");
+        dsc.setUsername("sa");
+        dsc.setPassword("sctxj.com.cn");
         mpg.setDataSource(dsc);
 
         // 包配置
@@ -128,7 +128,7 @@ public class CodeGenerator {
         strategy.setSuperEntityColumns("id");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix("tb_");
+        strategy.setTablePrefix("Txj_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new VelocityTemplateEngine());
         mpg.execute();
