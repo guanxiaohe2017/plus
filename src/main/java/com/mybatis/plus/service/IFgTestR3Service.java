@@ -28,4 +28,6 @@ public interface IFgTestR3Service extends IService<FgTestR3> {
     void deleteSHWD();
 
     void addDimension(String type, String webGuid);
+
+    void removeRepeatItems();
 }

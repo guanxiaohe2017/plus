@@ -92,5 +92,18 @@ public class FgTestR3Controller {
         return "success";
     }
 
+    /**
+     * @author: 官昌洪
+     * @Description: 去重法规
+     * @Date: 2020/1/16 10:07
+     * @Param:
+     * @return:
+     */
+    @RequestMapping("removeRepeatItems")
+    public String removeRepeatItems() {
+        iFgTestR3Service.removeRepeatItems();
+        return "success";
+    }
+
 }
 

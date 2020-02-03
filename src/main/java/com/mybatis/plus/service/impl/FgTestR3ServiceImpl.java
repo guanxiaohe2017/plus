@@ -250,7 +250,6 @@ public class FgTestR3ServiceImpl extends ServiceImpl<FgTestR3Mapper, FgTestR3> i
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void addDimension(String type, String webGuid) {
         String flagStr = "无";
         List<Dict> preDicts = dictService.list((new QueryWrapper<Dict>()).eq("dictType", type).orderByDesc("priority"));
@@ -326,4 +325,75 @@ public class FgTestR3ServiceImpl extends ServiceImpl<FgTestR3Mapper, FgTestR3> i
         }
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void removeRepeatItems() {
+        List<Long> removeList = new ArrayList<>();
+        List<FgTestR3> baseList = iFgTestR3Service
+                .list((new QueryWrapper<FgTestR3>()).select("autoid","titles","numbers")
+                        .eq("webGuid","1"));
+        List<String> baseStrs = baseList.stream().filter(e -> StringUtils
+                .isNotEmpty(e.getTitles()) && StringUtils.isNotEmpty(e.getNumbers()))
+                .map(e -> e.getTitles().trim() + e.getNumbers().trim())
+                .collect(Collectors.toList());
+
+        List<FgTestR3> list = iFgTestR3Service
+                .list((new QueryWrapper<FgTestR3>())
+                        .select("autoid","titles","numbers")
+                        .ne("webGuid","1"));
+        for (FgTestR3 fgTestR3 : list) {
+            if (StringUtils.isEmpty(fgTestR3.getNumbers())
+                    || StringUtils.isEmpty(fgTestR3.getTitles())) {
+                continue;
+            }
+            if (baseStrs.contains(fgTestR3.getTitles().trim()+fgTestR3.getNumbers().trim())) {
+                removeList.add(fgTestR3.getAutoid());
+            }
+        }
+        int size = removeList.size();
+        int fromIndex = 0;
+        int toIndex = 2000;
+        while (toIndex < size) {
+            optDelete(removeList, fromIndex, toIndex);
+            fromIndex = toIndex;
+            toIndex = toIndex + 2000;
+        }
+
+        if (fromIndex < size) {
+            toIndex = size;
+            optDelete(removeList, fromIndex, toIndex);
+        }
+    }
+
+    private void optDelete(List<Long> removeList, int fromIndex, int toIndex) {
+        List<Long> optList = removeList.subList(fromIndex, toIndex);
+        iFgTestR3Service.removeByIds(optList);
+    }
+
+    //    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void removeRepeatItems2() {
+        List<Long> removeList = new ArrayList<>();
+        List<FgTestR3> list = iFgTestR3Service
+                .list((new QueryWrapper<FgTestR3>()).select("autoid","titles","numbers"));
+        List<String> numbers = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
+        for (FgTestR3 fgTestR3 : list) {
+            if (StringUtils.isEmpty(fgTestR3.getNumbers())
+                    || StringUtils.isEmpty(fgTestR3.getTitles())) {
+                continue;
+            }
+            if (numbers.contains(fgTestR3.getNumbers().trim())
+                    && titles.contains(fgTestR3.getTitles().trim())) {
+                removeList.add(fgTestR3.getAutoid());
+            } else {
+                numbers.add(fgTestR3.getNumbers());
+                titles.add(fgTestR3.getTitles());
+            }
+        }
+        int size = removeList.size();
+
+//        iFgTestR3Service.removeByIds(removeList);
+
+    }
 }
