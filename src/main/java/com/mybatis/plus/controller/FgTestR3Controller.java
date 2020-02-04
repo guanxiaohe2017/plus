@@ -38,6 +38,7 @@ public class FgTestR3Controller {
     @RequestMapping("formatContent")
     public String formatContent(){
 
+        iFgTestR3Service.fixTitles();
         return "success";
     }
 
@@ -50,7 +51,7 @@ public class FgTestR3Controller {
 
     @RequestMapping("fixFg")
     public String fixFg(){
-        iFgTestR3Service.fixFg();
+        iFgTestR3Service.fixFg2();
 
         return "success";
     }

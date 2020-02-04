@@ -30,4 +30,10 @@ public interface IFgTestR3Service extends IService<FgTestR3> {
     void addDimension(String type, String webGuid);
 
     void removeRepeatItems();
+
+    void fixFg2();
+
+    void handleNumbers();
+
+    void fixTitles();
 }

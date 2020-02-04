@@ -2,6 +2,7 @@ package com.mybatis.plus.service.impl;
 
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.Console;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mybatis.plus.entity.Dict;
@@ -14,10 +15,13 @@ import com.mybatis.plus.service.IWdTestR3Service;
 import com.mybatis.plus.utils.CommonConstraint;
 import com.mybatis.plus.utils.TypeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,6 +159,29 @@ public class FgTestR3ServiceImpl extends ServiceImpl<FgTestR3Mapper, FgTestR3> i
             fgTestR3.setAttachmentesName(name.replace(regex.toString(),""));
         }
 
+        iFgTestR3Service.updateBatchById(list);
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void fixFg2() {
+        QueryWrapper<FgTestR3> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("webGuid","132");
+        queryWrapper.isNotNull("attachmentesUrl");
+        queryWrapper.ne("attachmentesUrl","");
+        List<FgTestR3> list = iFgTestR3Service.list(queryWrapper);
+
+        for (FgTestR3 fgTestR3 : list) {
+            String url = fgTestR3.getAttachmentesUrl();
+            List<String> stringList = new ArrayList<>();
+            String[] strings = url.split(",");
+            for (String string : strings) {
+                stringList.add("\\Files\\132\\" + string);
+            }
+            fgTestR3.setAttachmentesUrl(StringUtils.join(stringList,","));
+        }
+        int size = list.size();
         iFgTestR3Service.updateBatchById(list);
     }
 
@@ -395,5 +422,49 @@ public class FgTestR3ServiceImpl extends ServiceImpl<FgTestR3Mapper, FgTestR3> i
 
 //        iFgTestR3Service.removeByIds(removeList);
 
+    }
+
+    @Override
+    public void handleNumbers() {
+        List<FgTestR3> list = iFgTestR3Service
+                .list((new QueryWrapper<FgTestR3>()).eq("webGuid","105"));
+
+        for (FgTestR3 fgTestR3 : list) {
+            String content = fgTestR3.getContents();
+            Document document = Jsoup.parse(content);
+            String s = document.text();
+            String[] split = s.split(" ");
+            fgTestR3.setNumbers(split[0]);
+        }
+
+        iFgTestR3Service.updateBatchById(list);
+    }
+
+    @Override
+    public void fixTitles() {
+        List<FgTestR3> list = iFgTestR3Service
+                .list((new QueryWrapper<FgTestR3>()).eq("webGuid","119"));
+        for (FgTestR3 fgTestR3 : list) {
+            String url = fgTestR3.getSourceUrl();
+            Jsoup.connect(url);
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(url).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String s = doc.text();
+            String[] split = s.split(" ");
+            fgTestR3.setTitles(split[2]);
+        }
+        iFgTestR3Service.updateBatchById(list);
+
+
+//        Document doc = Jsoup.connect("http://example.com")
+//                .data("query", "Java")
+//                .userAgent("Mozilla")
+//                .cookie("auth", "token")
+//                .timeout(3000)
+//                .post();
     }
 }
