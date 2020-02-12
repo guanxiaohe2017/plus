@@ -36,4 +36,8 @@ public interface IFgTestR3Service extends IService<FgTestR3> {
     void handleNumbers();
 
     void fixTitles();
+
+    void removeHref(String webGuid);
+
+    void reAddFj();
 }

@@ -36,9 +36,9 @@ public class FgTestR3Controller {
     }
 
     @RequestMapping("formatContent")
-    public String formatContent(){
+    public String formatContent(String webGuid){
 
-        iFgTestR3Service.fixTitles();
+        iFgTestR3Service.removeHref(webGuid);
         return "success";
     }
 

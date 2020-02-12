@@ -467,4 +467,64 @@ public class FgTestR3ServiceImpl extends ServiceImpl<FgTestR3Mapper, FgTestR3> i
 //                .timeout(3000)
 //                .post();
     }
+
+    /**
+     * @author: 官昌洪
+     * @Description: 去除文章a标签
+     * @Date: 2020/2/5 16:15
+     * @Param: 
+     * @return: 
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void removeHref(String webGuid) {
+        List<FgTestR3> list = iFgTestR3Service
+                .list((new QueryWrapper<FgTestR3>()).eq("webGuid", webGuid)
+                        .like("contents", "</a>"));
+        for (FgTestR3 fgTestR3 : list) {
+            String contents = fgTestR3.getContents();
+            StringBuilder stringBuilder = new StringBuilder();
+            String[] split = contents.split("<a");
+            for (String s : split) {
+                if (s.contains("</a>")) {
+                    String[] split1 = s.split("</a>");
+                    String[] split2 = split1[0].split(">");
+                    if (split2.length > 1) {
+                        stringBuilder.append(split2[1]);
+                    }
+                    if (split1.length > 1) {
+                        stringBuilder.append(split1[1]);
+                    }
+                } else {
+                    stringBuilder.append(s);
+                }
+            }
+//            String s1 = contents;
+//            String s2 = stringBuilder.toString();
+            fgTestR3.setContents(stringBuilder.toString());
+        }
+
+        iFgTestR3Service.updateBatchById(list);
+    }
+
+    @Override
+    public void reAddFj() {
+        List<FgTestR3> list = iFgTestR3Service
+                .list((new QueryWrapper<FgTestR3>()).eq("webGuid","130")
+                        .like("contents","附件"));
+        for (FgTestR3 fgTestR3 : list) {
+            String url = fgTestR3.getSourceUrl();
+            Jsoup.connect(url);
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(url).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+//            String s = doc.get;
+
+        }
+//        iFgTestR3Service.updateBatchById(list);
+    }
 }
